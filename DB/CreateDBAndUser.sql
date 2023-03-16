@@ -3,3 +3,6 @@ create database tecnicasdev with owner tecnicasuser;
 
 create user airlinesuser with encrypted password 'airlinesuser';
 create database airlinesapp with owner airlinesuser;
+
+create user bancawebuser with encrypted password 'bancawebuser';
+create database bancaweb with owner bancawebuser;
