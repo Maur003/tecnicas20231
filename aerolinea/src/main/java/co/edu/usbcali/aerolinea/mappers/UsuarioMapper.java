@@ -11,34 +11,36 @@ public class UsuarioMapper {
     public static UsuarioDTO domainToDTO(Usuario usuario) {
         return UsuarioDTO.builder()
                 .usuaId(usuario.getUsuaId())
-                .rousIdRolUsuario(usuario.getRolUsuario() != null ? usuario.getRolUsuario().getRousId() : null)
+                .rolUsuario_rousId( ( usuario.getRolUsuario() != null )
+                        ? usuario.getRolUsuario().getRousId() : null )
                 .cedula(usuario.getCedula())
                 .nombre(usuario.getNombre())
                 .apellido(usuario.getApellido())
                 .correo(usuario.getCorreo())
                 .estado(usuario.getEstado())
-                .descripcionRolUsuario(usuario.getRolUsuario() != null ? usuario.getRolUsuario().getDescripcion() : null)
                 .build();
     }
 
-    public static List<UsuarioDTO> domainToDTOList(List<Usuario> usuarios) {
-        return usuarios.stream().map(usuario -> domainToDTO(usuario)).collect(Collectors.toList());
-    }
-
-    public static Usuario dTOToDomain(UsuarioDTO usuarioDTO) {
+    public static Usuario dtoToDomain(UsuarioDTO usuarioDTO) {
         return Usuario.builder()
                 .usuaId(usuarioDTO.getUsuaId())
                 .cedula(usuarioDTO.getCedula())
                 .nombre(usuarioDTO.getNombre())
                 .apellido(usuarioDTO.getApellido())
+
                 .correo(usuarioDTO.getCorreo())
                 .estado(usuarioDTO.getEstado())
                 .build();
     }
 
-    public static List<Usuario> dTOToDomainList(List<UsuarioDTO> usuariosDTO) {
-        return usuariosDTO.stream().map(usuarioDTO -> dTOToDomain(usuarioDTO)).collect(Collectors.toList());
+    public static List<UsuarioDTO> domainToDtoList(List<Usuario> usuarios) {
+        return usuarios.stream().map(u -> domainToDTO(u)).collect(Collectors.toList());
     }
+
+    public static List<Usuario> dtoToDomainList(List<UsuarioDTO> usuariosDTO) {
+        return usuariosDTO.stream().map(u -> dtoToDomain(u)).collect(Collectors.toList());
+    }
+
 
 
 }

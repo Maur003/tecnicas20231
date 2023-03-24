@@ -1,9 +1,7 @@
 package co.edu.usbcali.aerolinea.controllers;
 
 import co.edu.usbcali.aerolinea.dtos.RolUsuarioDTO;
-import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
 import co.edu.usbcali.aerolinea.mappers.RolUsuarioMapper;
-import co.edu.usbcali.aerolinea.mappers.UsuarioMapper;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
