@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Consignacion {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "con_codigo", length = 10, nullable = false)
     private Integer codigo;

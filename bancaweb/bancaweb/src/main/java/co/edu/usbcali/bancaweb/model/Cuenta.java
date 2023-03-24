@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "cuentas")
 public class Cuenta {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "cue_numero", length = 30, nullable = false)

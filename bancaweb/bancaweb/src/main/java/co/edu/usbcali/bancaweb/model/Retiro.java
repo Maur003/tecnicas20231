@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Retiro {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "ret_codigo", length = 10, nullable = false)

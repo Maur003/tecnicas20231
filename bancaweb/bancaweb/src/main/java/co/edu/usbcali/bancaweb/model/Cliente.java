@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "clientes")
 public class Cliente {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "cli_id", length = 10, nullable = false)
