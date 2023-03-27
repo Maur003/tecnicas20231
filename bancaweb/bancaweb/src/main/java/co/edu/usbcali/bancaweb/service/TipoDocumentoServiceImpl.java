@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TipoDocumentoServiceImpl implements TipoDocumentoService {
@@ -25,27 +26,16 @@ public class TipoDocumentoServiceImpl implements TipoDocumentoService {
     }
 
     @Override
-    public TipoDocumentoDTO guardarNuevoTipoDocumento(TipoDocumentoDTO tipoDocumentoDTO) throws Exception {
-        //Validar DTO
-        if (tipoDocumentoDTO == null) {
-            throw new Exception("El tipo de documento no puede ser nulo");
+    public TipoDocumentoDTO buscarTipoDocumentoPorCodigo(Integer codigo) throws Exception {
+        if (codigo == null || codigo.equals(0)) {
+            throw new Exception("El código debe ser numérico mayor a cero");
         }
-        if (tipoDocumentoDTO.getCodigo() == null ||
-                tipoDocumentoDTO.getCodigo().equals(0)) {
-            throw new Exception("Código no puede ser nulo o 0");
+        Optional<TipoDocumento> tipoDocumentoOptional = tipoDocumentoRepository.findById(codigo);
+        if(tipoDocumentoOptional.isPresent()) {
+            return TipoDocumentoMapper.modelToDto(tipoDocumentoOptional.get());
         }
-
-        if(tipoDocumentoRepository.findById(tipoDocumentoDTO.getCodigo()).isPresent()) {
-            throw new Exception("El tipo de documento con código "
-                    +tipoDocumentoDTO.getCodigo()+" ya existe");
-        }
-
-        if (tipoDocumentoDTO.getNombre() == null ||
-                tipoDocumentoDTO.getNombre().trim().isEmpty()) {
-            throw new Exception("Nombre no puede ser nulo o vacío");
-        }
-        //Convertir DTO a Modelo
-        TipoDocumento tipoDocumento = TipoDocumentoMapper.dtoToModel(tipoDocumentoDTO);
-        return TipoDocumentoMapper.modelToDto(tipoDocumentoRepository.save(tipoDocumento));
+        return TipoDocumentoDTO.builder().build();
     }
+
+
 }

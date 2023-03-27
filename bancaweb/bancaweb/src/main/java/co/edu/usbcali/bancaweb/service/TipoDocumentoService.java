@@ -7,5 +7,5 @@ import java.util.List;
 public interface TipoDocumentoService {
     List<TipoDocumentoDTO> buscarTodos();
 
-    TipoDocumentoDTO guardarNuevoTipoDocumento(TipoDocumentoDTO tipoDocumentoDTO) throws Exception;
+    TipoDocumentoDTO buscarTipoDocumentoPorCodigo(Integer codigo) throws Exception;
 }

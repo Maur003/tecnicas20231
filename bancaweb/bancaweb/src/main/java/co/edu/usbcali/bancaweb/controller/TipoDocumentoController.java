@@ -8,6 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.Min;
+import java.lang.reflect.GenericArrayType;
 import java.util.List;
 
 @RestController
@@ -21,22 +26,15 @@ public class TipoDocumentoController {
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<List<TipoDocumentoDTO>> todos(){
+    public ResponseEntity<List<TipoDocumentoDTO>> todos() {
         return new ResponseEntity(
                 tipoDocumentoService.buscarTodos()
                 , HttpStatus.OK);
     }
 
-    @PostMapping(path = "/guardarNuevoTipoDocumento",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarNuevoTipoDocumento(@RequestBody TipoDocumentoDTO tipoDocumentoDTO) {
-        try {
-            return new ResponseEntity(
-                    tipoDocumentoService.guardarNuevoTipoDocumento(tipoDocumentoDTO), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/buscarPorCodigo/{codigo}")
+    public ResponseEntity buscarPorCodigo(@PathVariable @Min(1) Integer codigo) throws Exception{
+        return new ResponseEntity(tipoDocumentoService.buscarTipoDocumentoPorCodigo(codigo), HttpStatus.OK);
     }
 
 }
