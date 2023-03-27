@@ -3,7 +3,6 @@ package co.edu.usbcali.bancaweb.mapper;
 import co.edu.usbcali.bancaweb.dto.TipoDocumentoDTO;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
