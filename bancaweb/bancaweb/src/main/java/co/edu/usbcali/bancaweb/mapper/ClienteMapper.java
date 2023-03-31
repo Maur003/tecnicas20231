@@ -4,6 +4,7 @@ import co.edu.usbcali.bancaweb.dto.ClienteDTO;
 import co.edu.usbcali.bancaweb.model.Cliente;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClienteMapper {
 
@@ -12,6 +13,8 @@ public class ClienteMapper {
                 .id(cliente.getId())
                 .tipoDocumentoCodigo((cliente.getTipoDocumento() != null) ?
                         cliente.getTipoDocumento().getCodigo() : null)
+                .tipoDocumentoNombre((cliente.getTipoDocumento() != null) ?
+                        cliente.getTipoDocumento().getNombre() : null)
                 .nombre(cliente.getNombre())
                 .direccion(cliente.getDireccion())
                 .telefono(cliente.getTelefono())

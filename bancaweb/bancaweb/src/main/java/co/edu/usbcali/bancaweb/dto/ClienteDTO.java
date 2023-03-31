@@ -12,6 +12,7 @@ import lombok.ToString;
 public class ClienteDTO {
     private Integer id;
     private Integer tipoDocumentoCodigo;
+    private String tipoDocumentoNombre;
     private String nombre;
     private String direccion;
     private String telefono;
