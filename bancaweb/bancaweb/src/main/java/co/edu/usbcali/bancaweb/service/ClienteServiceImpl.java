@@ -44,8 +44,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteDTO buscarPorId(Integer id) throws Exception{
-        if(id == null || !clienteRepository.existsById(id)) {
+    public ClienteDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !clienteRepository.existsById(id)) {
             throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
         }
         return ClienteMapper.modelToDTO(clienteRepository.getReferenceById(id));
@@ -56,13 +56,28 @@ public class ClienteServiceImpl implements ClienteService {
 
         if (clienteDTO.getId() == null) throw new Exception("El id del cliente es obligatorio.");
 
-        if (esCreacion && clienteRepository.existsById(clienteDTO.getId())) {
-            throw new Exception("El cliente con Id " +
-                    clienteDTO.getId() + " ya se encuentra registrado.");
+        if (StringUtils.isBlank(clienteDTO.getMail()) ||
+                !Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, clienteDTO.getMail())) {
+            throw new Exception("El correo electrónico no es válido.");
         }
-        if (!esCreacion && !clienteRepository.existsById(clienteDTO.getId())) {
-            throw new Exception("No se ha encontrado el cliente con Id " +
-                    clienteDTO.getId() + ".");
+
+        if (esCreacion) {
+            if(clienteRepository.existsById(clienteDTO.getId())) {
+                throw new Exception("El cliente con Id " +
+                        clienteDTO.getId() + " ya se encuentra registrado.");
+            }
+            if (clienteRepository.existsClienteByMail(clienteDTO.getMail())) {
+                throw new Exception("El correo electrónico " + clienteDTO.getMail() + " ya está registrado para otro cliente.");
+            }
+        }
+        if (!esCreacion) {
+            if (!clienteRepository.existsById(clienteDTO.getId())) {
+                throw new Exception("No se ha encontrado el cliente con Id " +
+                        clienteDTO.getId() + ".");
+            }
+            if (clienteRepository.existsClienteByMailAndIdIsNot(clienteDTO.getMail(), clienteDTO.getId())) {
+                throw new Exception("El correo electrónico " + clienteDTO.getMail() + " ya está registrado para otro cliente.");
+            }
         }
 
         if (clienteDTO.getTipoDocumentoCodigo() == null || clienteDTO.getTipoDocumentoCodigo() <= 0) {
@@ -78,16 +93,14 @@ public class ClienteServiceImpl implements ClienteService {
         if (StringUtils.isBlank(clienteDTO.getNombre())) throw new Exception("El nombre del cliente es obligatorio.");
 
 
-        if (StringUtils.isBlank(clienteDTO.getDireccion())) throw new Exception("La dirección del cliente es obligatoria.");
+        if (StringUtils.isBlank(clienteDTO.getDireccion()))
+            throw new Exception("La dirección del cliente es obligatoria.");
 
 
-        if (StringUtils.isBlank(clienteDTO.getTelefono())) throw new Exception("El teléfono del cliente es obligatorio.");
+        if (StringUtils.isBlank(clienteDTO.getTelefono()))
+            throw new Exception("El teléfono del cliente es obligatorio.");
 
 
-        if (StringUtils.isBlank(clienteDTO.getMail()) ||
-                !Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, clienteDTO.getMail())) {
-            throw new Exception("El correo electrónico no es válido.");
-        }
     }
 
     private ClienteDTO crearOModificarCliente(ClienteDTO clienteDTO) {
