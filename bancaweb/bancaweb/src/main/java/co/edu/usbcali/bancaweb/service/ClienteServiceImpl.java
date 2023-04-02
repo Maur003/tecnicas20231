@@ -9,6 +9,7 @@ import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ClienteServiceImpl implements ClienteService{
@@ -31,10 +32,19 @@ public class ClienteServiceImpl implements ClienteService{
             throw new Exception("El cliente no puede ser nulo");
         }
         //Aquí van el resto de las validaciones
+        if (Objects.isNull(clienteDTO.getTipoDocumentoCodigo())) {
+            throw new Exception("El tipo de documento del cliente no puede ser nulo");
+        }
 
+        // Validar si el tipo de documento consultado no existe
+        if (!tipoDocumentoRepository.existsById(clienteDTO.getTipoDocumentoCodigo())) {
+            throw new Exception("El tipo de documento "+clienteDTO.getTipoDocumentoCodigo()
+                    +" no se encuentra en base de datos");
+        }
         //Consulto el tipo de documento en la base de datos
         TipoDocumento tipoDocumento =
                 tipoDocumentoRepository.getReferenceById(clienteDTO.getTipoDocumentoCodigo());
+
 
         // Mapeo el cliente hacia Domain/Modelo/Entity
         Cliente cliente = ClienteMapper.dtoToModel(clienteDTO);
