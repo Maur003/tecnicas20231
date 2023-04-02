@@ -41,6 +41,10 @@ public class ClienteServiceImpl implements ClienteService{
 
         //Agrego el tipo de documento desde Base de Datos al cliente
         cliente.setTipoDocumento(tipoDocumento);
-        return null;
+
+        //Guardar el cliente en base de datos
+        cliente = clienteRepository.save(cliente);
+
+        return ClienteMapper.modelToDTO(cliente);
     }
 }
