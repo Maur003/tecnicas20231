@@ -9,4 +9,8 @@ public interface ClienteService {
 
     ClienteDTO crearNuevoCliente(ClienteDTO clienteDTO) throws Exception;
 
+    ClienteDTO modificarCliente(ClienteDTO clienteDTO) throws Exception;
+
+    ClienteDTO buscarPorId(Integer id) throws Exception;
+
 }
