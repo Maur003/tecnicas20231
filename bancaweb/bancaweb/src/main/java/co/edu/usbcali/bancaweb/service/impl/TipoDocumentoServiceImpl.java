@@ -1,9 +1,10 @@
-package co.edu.usbcali.bancaweb.service;
+package co.edu.usbcali.bancaweb.service.impl;
 
 import co.edu.usbcali.bancaweb.dto.TipoDocumentoDTO;
 import co.edu.usbcali.bancaweb.mapper.TipoDocumentoMapper;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
+import co.edu.usbcali.bancaweb.service.TipoDocumentoService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

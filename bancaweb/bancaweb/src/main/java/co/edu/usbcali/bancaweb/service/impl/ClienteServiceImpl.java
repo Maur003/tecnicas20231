@@ -1,4 +1,4 @@
-package co.edu.usbcali.bancaweb.service;
+package co.edu.usbcali.bancaweb.service.impl;
 
 import co.edu.usbcali.bancaweb.dto.ClienteDTO;
 import co.edu.usbcali.bancaweb.mapper.ClienteMapper;
@@ -6,6 +6,7 @@ import co.edu.usbcali.bancaweb.model.Cliente;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
+import co.edu.usbcali.bancaweb.service.ClienteService;
 import co.edu.usbcali.bancaweb.utility.ConstantesUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
