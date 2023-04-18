@@ -5,31 +5,30 @@ import co.edu.usbcali.bancaweb.model.Cliente;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
+import co.edu.usbcali.bancaweb.service.impl.ClienteServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class ClienteServiceImplTest {
 
-    @Autowired
-    private ClienteService clienteService;
+    @InjectMocks
+    private ClienteServiceImpl clienteService;
 
-    @MockBean
+    @Mock
     private TipoDocumentoRepository tipoDocumentoRepository;
 
-    @MockBean
+    @Mock
     ClienteRepository clienteRepository;
 
 
@@ -45,9 +44,12 @@ public class ClienteServiceImplTest {
                 .mail("elmail@mail.com")
                 .build();
 
+        tipoDocumentoRepository.save(tipoDocumento);
+        clienteRepository.save(cliente);
+
         // Mock de la respuesta del repositorio
-        Mockito.when(clienteRepository.existsById(1)).thenReturn(true);
-        Mockito.when(clienteRepository.getReferenceById(1)).thenReturn(cliente);
+        given(clienteRepository.existsById(1)).willReturn(true);
+        given(clienteRepository.getReferenceById(cliente.getId())).willReturn(cliente);
 
         // Llamado al método a probar
         ClienteDTO clienteDTO = clienteService.buscarPorId(1);
@@ -58,16 +60,8 @@ public class ClienteServiceImplTest {
 
 
     @Test
-    void buscarTodos() throws Exception {
+    void buscarTodos() {
         TipoDocumento tipoDocumento = TipoDocumento.builder().codigo(1).nombre("Cédula").build();
-        Cliente.builder()
-                .id(1)
-                .tipoDocumento(tipoDocumento)
-                .nombre("Prueba")
-                .direccion("Calle Carrera")
-                .telefono("55555")
-                .mail("elmail@mail.com")
-                .build();
 
         List<Cliente> clientesRetorno = Arrays.asList(Cliente.builder()
                 .id(1)
@@ -87,12 +81,43 @@ public class ClienteServiceImplTest {
                         .build());
 
         // Mock de la respuesta del repositorio
-        Mockito.when(clienteRepository.findAll()).thenReturn(clientesRetorno);
+        given(clienteRepository.findAll()).willReturn(clientesRetorno);
 
         List<ClienteDTO> clientes = clienteService.buscarTodos();
 
         assertEquals(2, clientes.size());
         assertEquals("Prueba2", clientes.get(1).getNombre());
+
+    }
+
+    @Test
+    void crearNuevoCliente() throws Exception {
+        TipoDocumento tipoDocumento = TipoDocumento.builder().codigo(1).nombre("Cédula").build();
+        ClienteDTO clienteDTO = ClienteDTO.builder()
+                .id(1)
+                .tipoDocumentoCodigo(1)
+                .nombre("Prueba")
+                .direccion("Calle Carrera")
+                .telefono("55555")
+                .mail("elmail@mail.com")
+                .build();
+
+       Cliente cliente = Cliente.builder()
+               .id(1)
+               .tipoDocumento(tipoDocumento)
+               .nombre("Prueba")
+               .direccion("Calle Carrera")
+               .telefono("55555")
+               .mail("elmail@mail.com")
+               .build();
+
+        given(tipoDocumentoRepository.existsById(tipoDocumento.getCodigo())).willReturn(true);
+        given(tipoDocumentoRepository.getReferenceById(tipoDocumento.getCodigo())).willReturn(tipoDocumento);
+        given(clienteRepository.save(cliente)).willReturn(cliente);
+        ClienteDTO clienteGuardado = clienteService.crearNuevoCliente(clienteDTO);
+
+        assertEquals(clienteDTO.getId(), clienteGuardado.getId());
+        assertEquals(clienteDTO.getMail(), clienteGuardado.getMail());
 
     }
 
