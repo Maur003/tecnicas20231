@@ -1,6 +1,7 @@
 package co.edu.usbcali.bancaweb.service;
 
 import co.edu.usbcali.bancaweb.dto.ClienteDTO;
+import co.edu.usbcali.bancaweb.mapper.ClienteMapper;
 import co.edu.usbcali.bancaweb.model.Cliente;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
@@ -15,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -100,14 +103,8 @@ public class ClienteServiceImplTest {
                 .mail("elmail@mail.com")
                 .build();
 
-       Cliente cliente = Cliente.builder()
-               .id(1)
-               .tipoDocumento(tipoDocumento)
-               .nombre("Prueba")
-               .direccion("Calle Carrera")
-               .telefono("55555")
-               .mail("elmail@mail.com")
-               .build();
+       Cliente cliente = ClienteMapper.dtoToModel(clienteDTO);
+       cliente.setTipoDocumento(tipoDocumento);
 
         given(tipoDocumentoRepository.existsById(tipoDocumento.getCodigo())).willReturn(true);
         given(tipoDocumentoRepository.getReferenceById(tipoDocumento.getCodigo())).willReturn(tipoDocumento);
@@ -116,6 +113,33 @@ public class ClienteServiceImplTest {
 
         assertEquals(clienteDTO.getId(), clienteGuardado.getId());
         assertEquals(clienteDTO.getMail(), clienteGuardado.getMail());
+
+    }
+
+    @Test
+    void modificarCliente() throws Exception {
+        TipoDocumento tipoDocumento = TipoDocumento.builder().codigo(1).nombre("Cédula").build();
+        ClienteDTO clienteDTO = ClienteDTO.builder()
+                .id(1)
+                .tipoDocumentoCodigo(1)
+                .nombre("Prueba")
+                .direccion("Calle Carrera")
+                .telefono("55555")
+                .mail("elmail@mail.com")
+                .build();
+
+        Cliente cliente = ClienteMapper.dtoToModel(clienteDTO);
+        cliente.setTipoDocumento(tipoDocumento);
+
+        given(tipoDocumentoRepository.existsById(tipoDocumento.getCodigo())).willReturn(true);
+        given(tipoDocumentoRepository.getReferenceById(tipoDocumento.getCodigo())).willReturn(tipoDocumento);
+        given(clienteRepository.existsById(clienteDTO.getId())).willReturn(true);
+        given(clienteRepository.existsClienteByMailAndIdIsNot(anyString(), anyInt())).willReturn(false);
+        given(clienteRepository.save(cliente)).willReturn(cliente);
+        ClienteDTO clienteModificado = clienteService.modificarCliente(clienteDTO);
+
+        assertEquals(clienteDTO.getId(), clienteModificado.getId());
+        assertEquals(clienteDTO.getMail(), clienteModificado.getMail());
 
     }
 
