@@ -1,5 +1,7 @@
 package co.edu.usbcali.bancaweb.utility;
 
+import co.edu.usbcali.bancaweb.dto.TipoDocumentoDTO;
+import co.edu.usbcali.bancaweb.mapper.TipoDocumentoMapper;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 
 import java.util.Arrays;
@@ -17,4 +19,6 @@ public class TipoDocumentoUtilTest {
             TipoDocumento.builder().codigo(CODIGO_DOS).nombre(NOMBRE_PASAPORTE).build();
 
     public static List<TipoDocumento> TIPOS_DOCUMENTOS = Arrays.asList(TIPO_DOCUMENTO_CEDULA, TIPO_DOCUMENTO_PASAPORTE);
+
+    public static List<TipoDocumentoDTO> TIPOS_DOCUMENTOS_DTO = TipoDocumentoMapper.modelToDtoList(TIPOS_DOCUMENTOS);
 }
