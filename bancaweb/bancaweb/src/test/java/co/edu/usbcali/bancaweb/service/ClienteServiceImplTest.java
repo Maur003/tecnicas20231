@@ -1,9 +1,6 @@
 package co.edu.usbcali.bancaweb.service;
 
 import co.edu.usbcali.bancaweb.dto.ClienteDTO;
-import co.edu.usbcali.bancaweb.mapper.ClienteMapper;
-import co.edu.usbcali.bancaweb.model.Cliente;
-import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
 import co.edu.usbcali.bancaweb.service.impl.ClienteServiceImpl;
