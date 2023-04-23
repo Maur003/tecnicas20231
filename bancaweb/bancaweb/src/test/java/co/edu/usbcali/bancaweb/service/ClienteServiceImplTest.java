@@ -1,6 +1,7 @@
 package co.edu.usbcali.bancaweb.service;
 
 import co.edu.usbcali.bancaweb.dto.ClienteDTO;
+import co.edu.usbcali.bancaweb.mapper.ClienteMapper;
 import co.edu.usbcali.bancaweb.model.Cliente;
 import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
@@ -13,10 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -71,7 +73,19 @@ public class ClienteServiceImplTest {
 
         assertEquals(ClienteUtilTest.ID_UNO, clienteGuardado.getId());
         assertEquals(ClienteUtilTest.MAIL_UNO, clienteGuardado.getMail());
+    }
 
+    @Test
+    void modificarCliente() throws Exception {
+        given(tipoDocumentoRepository.existsById(TipoDocumentoUtilTest.CODIGO_UNO)).willReturn(true);
+        given(tipoDocumentoRepository.getReferenceById(TipoDocumentoUtilTest.CODIGO_UNO)).willReturn(TipoDocumentoUtilTest.TIPO_DOCUMENTO_CEDULA);
+        given(clienteRepository.existsById(ClienteUtilTest.ID_UNO)).willReturn(true);
+        given(clienteRepository.existsClienteByMailAndIdIsNot(anyString(), anyInt())).willReturn(false);
+        given(clienteRepository.save(ClienteUtilTest.CLIENTE_UNO)).willReturn(ClienteUtilTest.CLIENTE_UNO);
+        ClienteDTO clienteModificado = clienteService.modificarCliente(ClienteUtilTest.CLIENTEDTO_UNO);
+
+        assertEquals(ClienteUtilTest.ID_UNO, clienteModificado.getId());
+        assertEquals(ClienteUtilTest.MAIL_UNO, clienteModificado.getMail());
     }
 
 
