@@ -6,6 +6,8 @@ import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
 import co.edu.usbcali.bancaweb.service.impl.ClienteServiceImpl;
+import co.edu.usbcali.bancaweb.utility.ClienteUtilTest;
+import co.edu.usbcali.bancaweb.utility.TipoDocumentoUtilTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,90 +34,43 @@ public class ClienteServiceImplTest {
 
     @Test
     void buscarPorId() throws Exception {
-        TipoDocumento tipoDocumento = TipoDocumento.builder().codigo(1).nombre("Cédula").build();
-        Cliente cliente = Cliente.builder()
-                .id(1)
-                .tipoDocumento(tipoDocumento)
-                .nombre("Prueba")
-                .direccion("Calle Carrera")
-                .telefono("55555")
-                .mail("elmail@mail.com")
-                .build();
-
-        tipoDocumentoRepository.save(tipoDocumento);
-        clienteRepository.save(cliente);
+        tipoDocumentoRepository.save(TipoDocumentoUtilTest.TIPO_DOCUMENTO_CEDULA);
+        clienteRepository.save(ClienteUtilTest.CLIENTE_UNO);
 
         // Mock de la respuesta del repositorio
-        given(clienteRepository.existsById(1)).willReturn(true);
-        given(clienteRepository.getReferenceById(cliente.getId())).willReturn(cliente);
+        given(clienteRepository.existsById(ClienteUtilTest.ID_UNO)).willReturn(true);
+        given(clienteRepository.getReferenceById(ClienteUtilTest.ID_UNO)).willReturn(ClienteUtilTest.CLIENTE_UNO);
 
         // Llamado al método a probar
-        ClienteDTO clienteDTO = clienteService.buscarPorId(1);
+        ClienteDTO clienteDTO = clienteService.buscarPorId(ClienteUtilTest.ID_UNO);
 
         // Verificación del resultado esperado
-        assertEquals(clienteDTO.getId(), 1);
+        assertEquals(clienteDTO.getId(), ClienteUtilTest.ID_UNO);
+        assertEquals(clienteDTO.getNombre(), ClienteUtilTest.NOMBRE_UNO);
     }
 
 
     @Test
     void buscarTodos() {
-        TipoDocumento tipoDocumento = TipoDocumento.builder().codigo(1).nombre("Cédula").build();
-
-        List<Cliente> clientesRetorno = Arrays.asList(Cliente.builder()
-                .id(1)
-                .tipoDocumento(tipoDocumento)
-                .nombre("Prueba")
-                .direccion("Calle Carrera")
-                .telefono("55555")
-                .mail("elmail@mail.com")
-                .build(),
-                Cliente.builder()
-                        .id(2)
-                        .tipoDocumento(tipoDocumento)
-                        .nombre("Prueba2")
-                        .direccion("Calle Carrera")
-                        .telefono("55555")
-                        .mail("elmail@mail.com")
-                        .build());
-
         // Mock de la respuesta del repositorio
-        given(clienteRepository.findAll()).willReturn(clientesRetorno);
+        given(clienteRepository.findAll()).willReturn(ClienteUtilTest.CLIENTES);
 
         List<ClienteDTO> clientes = clienteService.buscarTodos();
 
         assertEquals(2, clientes.size());
-        assertEquals("Prueba2", clientes.get(1).getNombre());
+        assertEquals(ClienteUtilTest.NOMBRE_DOS, clientes.get(1).getNombre());
 
     }
 
     @Test
     void crearNuevoCliente() throws Exception {
-        TipoDocumento tipoDocumento = TipoDocumento.builder().codigo(1).nombre("Cédula").build();
-        ClienteDTO clienteDTO = ClienteDTO.builder()
-                .id(1)
-                .tipoDocumentoCodigo(1)
-                .nombre("Prueba")
-                .direccion("Calle Carrera")
-                .telefono("55555")
-                .mail("elmail@mail.com")
-                .build();
+        given(tipoDocumentoRepository.existsById(TipoDocumentoUtilTest.CODIGO_UNO)).willReturn(true);
+        given(tipoDocumentoRepository.getReferenceById(TipoDocumentoUtilTest.CODIGO_UNO)).willReturn(TipoDocumentoUtilTest.TIPO_DOCUMENTO_CEDULA);
+        given(clienteRepository.save(ClienteUtilTest.CLIENTE_UNO)).willReturn(ClienteUtilTest.CLIENTE_UNO);
+        ClienteDTO clienteGuardado = clienteService.crearNuevoCliente(ClienteUtilTest.CLIENTEDTO_UNO);
 
-       Cliente cliente = Cliente.builder()
-               .id(1)
-               .tipoDocumento(tipoDocumento)
-               .nombre("Prueba")
-               .direccion("Calle Carrera")
-               .telefono("55555")
-               .mail("elmail@mail.com")
-               .build();
-
-        given(tipoDocumentoRepository.existsById(tipoDocumento.getCodigo())).willReturn(true);
-        given(tipoDocumentoRepository.getReferenceById(tipoDocumento.getCodigo())).willReturn(tipoDocumento);
-        given(clienteRepository.save(cliente)).willReturn(cliente);
-        ClienteDTO clienteGuardado = clienteService.crearNuevoCliente(clienteDTO);
-
-        assertEquals(clienteDTO.getId(), clienteGuardado.getId());
-        assertEquals(clienteDTO.getMail(), clienteGuardado.getMail());
+        assertEquals(ClienteUtilTest.ID_UNO, clienteGuardado.getId());
+        assertEquals(ClienteUtilTest.MAIL_UNO, clienteGuardado.getMail());
 
     }
 
