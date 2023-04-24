@@ -27,5 +27,14 @@ public class CuentaServiceImpl implements CuentaService {
 
         //Validar numeroCuenta
         ValidationUtility.stringIsNullOrBlank(cuentaDTO.getNumero(), "Debe ingresar información del número de la cuenta");
+
+        //Validar si llega la información del cliente
+        ValidationUtility.integerIsNullOrLessZero(cuentaDTO.getClienteId(), "Debe ingresar el id del cliente");
+
+        //Validar saldo
+        ValidationUtility.bigDecimalIsNullOrLessZero(cuentaDTO.getSaldo(), "El saldo inicial debe ser mayor a cero");
+
+        //Validar clave
+        ValidationUtility.stringIsNullOrBlank(cuentaDTO.getClave(), "Debe ingresar la clave");
     }
 }
