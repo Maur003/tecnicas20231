@@ -2,6 +2,8 @@ package co.edu.usbcali.bancaweb.service.impl;
 
 import co.edu.usbcali.bancaweb.dto.ClienteDTO;
 import co.edu.usbcali.bancaweb.dto.CuentaDTO;
+import co.edu.usbcali.bancaweb.mapper.CuentaMapper;
+import co.edu.usbcali.bancaweb.model.Cuenta;
 import co.edu.usbcali.bancaweb.repository.CuentaRepository;
 import co.edu.usbcali.bancaweb.service.CuentaService;
 import co.edu.usbcali.bancaweb.utility.ValidationUtility;
@@ -36,5 +38,8 @@ public class CuentaServiceImpl implements CuentaService {
 
         //Validar clave
         ValidationUtility.stringIsNullOrBlank(cuentaDTO.getClave(), "Debe ingresar la clave");
+
+        //Convertir CuentaDTO a Cuenta
+        Cuenta cuenta = CuentaMapper.dtoToModel(cuentaDTO);
     }
 }
