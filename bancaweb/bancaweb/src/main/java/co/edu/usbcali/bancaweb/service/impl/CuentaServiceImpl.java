@@ -26,6 +26,6 @@ public class CuentaServiceImpl implements CuentaService {
         ValidationUtility.isNull(cuentaDTO, "Debe llegar información sobre la cuenta");
 
         //Validar numeroCuenta
-        ValidationUtility.isNullOrBlank(cuentaDTO.getNumero(), "Debe ingresar información del número de la cuenta");
+        ValidationUtility.stringIsNullOrBlank(cuentaDTO.getNumero(), "Debe ingresar información del número de la cuenta");
     }
 }

@@ -1,6 +1,8 @@
 package co.edu.usbcali.bancaweb.utility;
 
-import org.springframework.util.StringUtils;
+import io.micrometer.common.util.StringUtils;
+
+import java.util.regex.Pattern;
 
 public class ValidationUtility {
 
@@ -10,9 +12,30 @@ public class ValidationUtility {
         }
     }
 
-    public static void isNullOrBlank(Object valor, String mensaje) throws Exception {
+    public static void stringIsNullOrBlank(String valor, String mensaje) throws Exception {
         isNull(valor, mensaje);
-        if(valor.toString().isBlank()) {
+        if(valor.isBlank()) {
+            throw new Exception(mensaje);
+        }
+    }
+
+    public static void integerIsNullOrZero(Integer valor, String mensaje) throws Exception {
+        isNull(valor, mensaje);
+        if(valor.compareTo(0) == 0) {
+            throw new Exception(mensaje);
+        }
+    }
+
+    public static void stringMailValidatePattern(String valor, String mensaje) throws Exception {
+        stringIsNullOrBlank(valor, mensaje);
+        if (!Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, valor)) {
+            throw new Exception(mensaje);
+        }
+    }
+
+    public static void integerIsNullOrLessZero(Integer valor, String mensaje) throws Exception {
+        isNull(valor, mensaje);
+        if(valor.compareTo(0) <= 0) {
             throw new Exception(mensaje);
         }
     }

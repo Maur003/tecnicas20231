@@ -8,10 +8,12 @@ import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
 import co.edu.usbcali.bancaweb.service.ClienteService;
 import co.edu.usbcali.bancaweb.utility.ConstantesUtility;
+import co.edu.usbcali.bancaweb.utility.ValidationUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.PatternMatchUtils;
 
+import javax.validation.Validation;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -53,15 +55,16 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     private void validarClienteDTO(ClienteDTO clienteDTO, boolean esCreacion) throws Exception {
-        if (clienteDTO == null) throw new Exception("No han llegado los datos del cliente.");
+        //Validar clienteDTO
+        ValidationUtility.isNull(clienteDTO, "No han llegado los datos del cliente.");
 
-        if (clienteDTO.getId() == null) throw new Exception("El id del cliente es obligatorio.");
+        //Validar id cliente
+        ValidationUtility.integerIsNullOrZero(clienteDTO.getId(), "El id del cliente es obligatorio.");
 
-        if (StringUtils.isBlank(clienteDTO.getMail()) ||
-                !Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, clienteDTO.getMail())) {
-            throw new Exception("El correo electrónico no es válido.");
-        }
+        //Validar mail
+        ValidationUtility.stringMailValidatePattern(clienteDTO.getMail(), "El correo electrónico no es válido.");
 
+        //Validar si es creación o actualización
         if (esCreacion) {
             if(clienteRepository.existsById(clienteDTO.getId())) {
                 throw new Exception("El cliente con Id " +
@@ -81,9 +84,8 @@ public class ClienteServiceImpl implements ClienteService {
             }
         }
 
-        if (clienteDTO.getTipoDocumentoCodigo() == null || clienteDTO.getTipoDocumentoCodigo() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
-        }
+        // Validar si el código del tipo de documento es null, menor o igual a cero
+        ValidationUtility.integerIsNullOrLessZero(clienteDTO.getTipoDocumentoCodigo(), "El tipo de documento debe ser un número positivo.");
 
         // Validar si el tipo de documento consultado no existe
         if (!tipoDocumentoRepository.existsById(clienteDTO.getTipoDocumentoCodigo())) {
@@ -91,17 +93,14 @@ public class ClienteServiceImpl implements ClienteService {
                     + " no se encuentra en base de datos");
         }
 
-        if (StringUtils.isBlank(clienteDTO.getNombre())) throw new Exception("El nombre del cliente es obligatorio.");
+        // Validar el nombre del cliente
+        ValidationUtility.stringIsNullOrBlank(clienteDTO.getNombre(), "El nombre del cliente es obligatorio.");
 
+        // Validar la dirección del cliente
+        ValidationUtility.stringIsNullOrBlank(clienteDTO.getDireccion(), "La dirección del cliente es obligatoria.");
 
-        if (StringUtils.isBlank(clienteDTO.getDireccion()))
-            throw new Exception("La dirección del cliente es obligatoria.");
-
-
-        if (StringUtils.isBlank(clienteDTO.getTelefono()))
-            throw new Exception("El teléfono del cliente es obligatorio.");
-
-
+        // Validar el teléfono del cliente
+        ValidationUtility.stringIsNullOrBlank(clienteDTO.getTelefono(), "El teléfono del cliente es obligatorio.");
     }
 
     private ClienteDTO crearOModificarCliente(ClienteDTO clienteDTO) {
