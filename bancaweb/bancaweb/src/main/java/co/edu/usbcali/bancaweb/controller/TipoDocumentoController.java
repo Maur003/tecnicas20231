@@ -1,18 +1,15 @@
 package co.edu.usbcali.bancaweb.controller;
 
-import co.edu.usbcali.bancaweb.dto.MensajeDTO;
 import co.edu.usbcali.bancaweb.dto.TipoDocumentoDTO;
 import co.edu.usbcali.bancaweb.service.TipoDocumentoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Min;
-import java.lang.reflect.GenericArrayType;
 import java.util.List;
 
 @RestController

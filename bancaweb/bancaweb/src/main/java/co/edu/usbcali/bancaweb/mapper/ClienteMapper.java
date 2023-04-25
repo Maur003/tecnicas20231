@@ -4,7 +4,6 @@ import co.edu.usbcali.bancaweb.dto.ClienteDTO;
 import co.edu.usbcali.bancaweb.model.Cliente;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClienteMapper {
 

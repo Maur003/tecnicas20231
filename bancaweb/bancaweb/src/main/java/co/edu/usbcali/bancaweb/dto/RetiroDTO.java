@@ -1,7 +1,5 @@
 package co.edu.usbcali.bancaweb.dto;
 
-import co.edu.usbcali.bancaweb.model.Cuenta;
-import co.edu.usbcali.bancaweb.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

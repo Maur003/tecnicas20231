@@ -7,16 +7,10 @@ import co.edu.usbcali.bancaweb.model.TipoDocumento;
 import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
 import co.edu.usbcali.bancaweb.service.ClienteService;
-import co.edu.usbcali.bancaweb.utility.ConstantesUtility;
 import co.edu.usbcali.bancaweb.utility.ValidationUtility;
-import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.PatternMatchUtils;
 
-import javax.validation.Validation;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {

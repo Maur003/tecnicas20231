@@ -1,6 +1,5 @@
 package co.edu.usbcali.bancaweb.service.impl;
 
-import co.edu.usbcali.bancaweb.dto.ClienteDTO;
 import co.edu.usbcali.bancaweb.dto.CuentaDTO;
 import co.edu.usbcali.bancaweb.mapper.CuentaMapper;
 import co.edu.usbcali.bancaweb.model.Cliente;

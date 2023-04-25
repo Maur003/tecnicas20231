@@ -49,4 +49,13 @@ public class ClienteUtilTest {
                     .telefono(TELEFONO_UNO)
                     .mail(MAIL_UNO)
                     .build();
+
+    public static ClienteDTO CLIENTEDTO_UNO_NO_ID =
+            ClienteDTO.builder()
+                    .tipoDocumentoCodigo(TipoDocumentoUtilTest.CODIGO_UNO)
+                    .nombre(NOMBRE_UNO)
+                    .direccion(DIRECCION_UNO)
+                    .telefono(TELEFONO_UNO)
+                    .mail(MAIL_UNO)
+                    .build();
 }

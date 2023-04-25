@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -70,6 +71,16 @@ public class ClienteServiceImplTest {
 
         assertEquals(ClienteUtilTest.ID_UNO, clienteGuardado.getId());
         assertEquals(ClienteUtilTest.MAIL_UNO, clienteGuardado.getMail());
+    }
+
+    @Test
+    void crearNuevoCliente_Exception(){
+        Exception exception = assertThrows(Exception.class, () ->
+                clienteService.crearNuevoCliente(ClienteUtilTest.CLIENTEDTO_UNO_NO_ID));
+
+        String expectedMessage = "El id del cliente es obligatorio.";
+        assertEquals(expectedMessage, exception.getMessage());
+
     }
 
     @Test

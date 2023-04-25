@@ -7,7 +7,6 @@ import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
 import co.edu.usbcali.bancaweb.service.TipoDocumentoService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

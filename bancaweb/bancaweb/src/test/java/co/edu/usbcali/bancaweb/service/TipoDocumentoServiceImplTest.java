@@ -1,12 +1,8 @@
 package co.edu.usbcali.bancaweb.service;
 
-import co.edu.usbcali.bancaweb.dto.ClienteDTO;
 import co.edu.usbcali.bancaweb.dto.TipoDocumentoDTO;
-import co.edu.usbcali.bancaweb.repository.ClienteRepository;
 import co.edu.usbcali.bancaweb.repository.TipoDocumentoRepository;
-import co.edu.usbcali.bancaweb.service.impl.ClienteServiceImpl;
 import co.edu.usbcali.bancaweb.service.impl.TipoDocumentoServiceImpl;
-import co.edu.usbcali.bancaweb.utility.ClienteUtilTest;
 import co.edu.usbcali.bancaweb.utility.TipoDocumentoUtilTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,8 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
