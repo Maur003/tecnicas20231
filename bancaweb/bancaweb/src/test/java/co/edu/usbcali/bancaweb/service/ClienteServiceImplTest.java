@@ -29,7 +29,7 @@ public class ClienteServiceImplTest {
     private TipoDocumentoRepository tipoDocumentoRepository;
 
     @Mock
-    ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
 
 
     @Test
