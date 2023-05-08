@@ -6,4 +6,7 @@ public interface CuentaService {
     CuentaDTO crearNuevaCuenta(CuentaDTO cuentaDTO) throws Exception;
 
     CuentaDTO modificarCuenta(CuentaDTO cuentaDTO) throws Exception;
+
+    CuentaDTO inactivarCuenta(CuentaDTO cuentaDTO) throws Exception;
+    CuentaDTO activarCuenta(CuentaDTO cuentaDTO) throws Exception;
 }

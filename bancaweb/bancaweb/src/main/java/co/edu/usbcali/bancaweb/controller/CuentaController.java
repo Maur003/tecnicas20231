@@ -37,4 +37,22 @@ public class CuentaController {
             return ResponseEntity.badRequest().body(MensajeDTO.builder().mensaje(e.getMessage()).build());
         }
     }
+
+    @PutMapping(path = "/inactivarCuenta")
+    public ResponseEntity inactivarCuenta(@RequestBody CuentaDTO cuentaDTO) {
+        try {
+            return ResponseEntity.ok().body(cuentaService.inactivarCuenta(cuentaDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(MensajeDTO.builder().mensaje(e.getMessage()).build());
+        }
+    }
+
+    @PutMapping(path = "/activarCuenta")
+    public ResponseEntity activarCuenta(@RequestBody CuentaDTO cuentaDTO) {
+        try {
+            return ResponseEntity.ok().body(cuentaService.activarCuenta(cuentaDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(MensajeDTO.builder().mensaje(e.getMessage()).build());
+        }
+    }
 }

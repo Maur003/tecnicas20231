@@ -51,6 +51,52 @@ public class CuentaServiceImpl implements CuentaService {
         return CuentaMapper.modelToDTO(cuentaRepository.save(cuenta));
     }
 
+    @Override
+    public CuentaDTO inactivarCuenta(CuentaDTO cuentaDTO) throws Exception {
+        validarActivacionInactivacionCuenta(cuentaDTO);
+
+        validarCuentaDTOSiExiste(cuentaDTO, true);
+
+        Cuenta cuenta = cuentaRepository.getReferenceById(cuentaDTO.getNumero());
+
+        cuenta.setActiva(ConstantesUtility.ESTADO_CUENTA_INACTIVA);
+
+        return retornarCuentaDTOActivaOInactiva(cuentaRepository.save(cuenta));
+    }
+
+    @Override
+    public CuentaDTO activarCuenta(CuentaDTO cuentaDTO) throws Exception {
+        validarActivacionInactivacionCuenta(cuentaDTO);
+
+        validarCuentaDTOSiExiste(cuentaDTO, false);
+
+        Cuenta cuenta = cuentaRepository.getReferenceById(cuentaDTO.getNumero());
+
+        cuenta.setActiva(ConstantesUtility.ESTADO_CUENTA_ACTIVA);
+
+        return retornarCuentaDTOActivaOInactiva(cuentaRepository.save(cuenta));
+    }
+
+    private void validarActivacionInactivacionCuenta(CuentaDTO cuentaDTO) throws Exception{
+        //Validar cuentaDTO
+        ValidationUtility.isNull(cuentaDTO, "Debe llegar información sobre la cuenta");
+
+        //Validar numeroCuenta
+        ValidationUtility.stringIsNullOrBlank(cuentaDTO.getNumero(), "Debe ingresar información del número de la cuenta");
+
+        //Validar si llega la información del cliente
+        ValidationUtility.integerIsNullOrLessZero(cuentaDTO.getClienteId(), "Debe ingresar el id del cliente");
+    }
+
+    public CuentaDTO retornarCuentaDTOActivaOInactiva(Cuenta cuenta) {
+        return CuentaDTO.builder()
+                .numero(cuenta.getNumero())
+                .clienteId((cuenta.getCliente() != null) ?
+                        cuenta.getCliente().getId() : null)
+                .activa(cuenta.getActiva())
+                .build();
+    }
+
     private void validarCuentaDTO(CuentaDTO cuentaDTO, boolean esCreacion) throws Exception{
         //Validar cuentaDTO
         ValidationUtility.isNull(cuentaDTO, "Debe llegar información sobre la cuenta");
@@ -67,17 +113,7 @@ public class CuentaServiceImpl implements CuentaService {
                 throw new Exception("Ya existe un número de cuenta ".concat(cuentaDTO.getNumero()));
             }
         } else {
-            if(!cuentaRepository.existsById(cuentaDTO.getNumero())) {
-                throw new Exception("No existe la cuenta con número ".concat(cuentaDTO.getNumero()));
-            }
-
-            if(!cuentaRepository.existsCuentaByActivaAndNumero(ConstantesUtility.ESTADO_CUENTA_ACTIVA, cuentaDTO.getNumero())) {
-                throw new Exception("La cuenta con número "+cuentaDTO.getNumero()+" no se encuentra activa");
-            }
-
-            if(!cuentaRepository.existsCuentaByNumeroAndClienteId(cuentaDTO.getNumero(), cuentaDTO.getClienteId())) {
-                throw new Exception("La cuenta con número "+cuentaDTO.getNumero()+" no pertenece al cliente con identificación "+cuentaDTO.getClienteId());
-            }
+            validarCuentaDTOSiExiste(cuentaDTO, true);
         }
 
         if(!clienteRepository.existsById(cuentaDTO.getClienteId())) {
@@ -89,5 +125,25 @@ public class CuentaServiceImpl implements CuentaService {
 
         //Validar clave
         ValidationUtility.stringIsNullOrBlank(cuentaDTO.getClave(), "Debe ingresar la clave");
+    }
+
+    private void validarCuentaDTOSiExiste(CuentaDTO cuentaDTO, boolean activa) throws Exception {
+        if(!cuentaRepository.existsById(cuentaDTO.getNumero())) {
+            throw new Exception("No existe la cuenta con número ".concat(cuentaDTO.getNumero()));
+        }
+
+        // Si está activa, se valida que se pueda inactivar
+        if(activa && cuentaRepository.existsCuentaByActivaAndNumero(ConstantesUtility.ESTADO_CUENTA_INACTIVA, cuentaDTO.getNumero())) {
+            throw new Exception("La cuenta con número "+cuentaDTO.getNumero()+" no se encuentra activa");
+        }
+
+        // Si no está activa, se valida que se pueda activar
+        if(!activa && cuentaRepository.existsCuentaByActivaAndNumero(ConstantesUtility.ESTADO_CUENTA_ACTIVA, cuentaDTO.getNumero())) {
+            throw new Exception("La cuenta con número "+cuentaDTO.getNumero()+" se encuentra activa");
+        }
+
+        if(!cuentaRepository.existsCuentaByNumeroAndClienteId(cuentaDTO.getNumero(), cuentaDTO.getClienteId())) {
+            throw new Exception("La cuenta con número "+cuentaDTO.getNumero()+" no pertenece al cliente con identificación "+cuentaDTO.getClienteId());
+        }
     }
 }
