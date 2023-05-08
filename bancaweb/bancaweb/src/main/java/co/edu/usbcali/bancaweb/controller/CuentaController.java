@@ -4,10 +4,7 @@ import co.edu.usbcali.bancaweb.dto.CuentaDTO;
 import co.edu.usbcali.bancaweb.dto.MensajeDTO;
 import co.edu.usbcali.bancaweb.service.CuentaService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -27,6 +24,15 @@ public class CuentaController {
     public ResponseEntity crearNuevaCuenta(@RequestBody CuentaDTO cuentaDTO) {
         try {
             return ResponseEntity.ok().body(cuentaService.crearNuevaCuenta(cuentaDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(MensajeDTO.builder().mensaje(e.getMessage()).build());
+        }
+    }
+
+    @PutMapping(path = "/modificarCuenta")
+    public ResponseEntity modificarCuenta(@RequestBody CuentaDTO cuentaDTO) {
+        try {
+            return ResponseEntity.ok().body(cuentaService.modificarCuenta(cuentaDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(MensajeDTO.builder().mensaje(e.getMessage()).build());
         }
