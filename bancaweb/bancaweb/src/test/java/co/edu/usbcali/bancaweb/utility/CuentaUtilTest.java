@@ -12,7 +12,6 @@ public class CuentaUtilTest {
     public static String NUMERO_DOS = "4008-5305-0015";
     public static BigDecimal SALDO = BigDecimal.valueOf(100000);
     public static String CLAVE = "1234";
-
     public static Cuenta CUENTA_UNO = Cuenta.builder()
             .numero(NUMERO_UNO)
             .cliente(ClienteUtilTest.CLIENTE_UNO)
@@ -33,6 +32,13 @@ public class CuentaUtilTest {
     public static CuentaDTO CUENTA_DTO = CuentaDTO.builder()
             .numero(NUMERO_UNO)
             .clienteId(ClienteUtilTest.ID_UNO)
+            .saldo(SALDO)
+            .clave(CLAVE)
+            .build();
+
+    public static CuentaDTO CUENTA_DTO_MODIFICAR = CuentaDTO.builder()
+            .numero(NUMERO_DOS)
+            .clienteId(ClienteUtilTest.ID_DOS)
             .saldo(SALDO)
             .clave(CLAVE)
             .build();
