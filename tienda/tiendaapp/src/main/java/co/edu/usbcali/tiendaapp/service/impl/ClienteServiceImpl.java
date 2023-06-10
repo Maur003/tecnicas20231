@@ -3,6 +3,7 @@ package co.edu.usbcali.tiendaapp.service.impl;
 import co.edu.usbcali.tiendaapp.domain.Cliente;
 import co.edu.usbcali.tiendaapp.domain.TipoDocumento;
 import co.edu.usbcali.tiendaapp.dto.ClienteDTO;
+import co.edu.usbcali.tiendaapp.exceptions.ClienteException;
 import co.edu.usbcali.tiendaapp.mapper.ClienteMapper;
 import co.edu.usbcali.tiendaapp.repository.ClienteRepository;
 import co.edu.usbcali.tiendaapp.service.ClienteService;
@@ -41,7 +42,7 @@ public class ClienteServiceImpl implements ClienteService {
         ValidationsUtil.integerIsNullOrLessZero(id, ClienteServiceMessages.ID_VALIDO_MSG);
 
         return clienteRepository.findById(id).map(ClienteMapper::domainToDto).orElseThrow(
-                () -> new Exception(String.format(ClienteServiceMessages.CLIENTE_NO_ENCONTRADO_POR_ID, id)));
+                () -> new ClienteException(String.format(ClienteServiceMessages.CLIENTE_NO_ENCONTRADO_POR_ID, id)));
 
         /*
         Cliente cliente = clienteRepository.getReferenceById(id);
