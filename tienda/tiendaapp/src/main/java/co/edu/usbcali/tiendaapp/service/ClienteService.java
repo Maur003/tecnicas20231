@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ClienteService {
     List<ClienteDTO> obtenerTodos();
-    ClienteDTO buscarPorId(Integer id);
-    ClienteDTO guardar(ClienteDTO clienteDTO);
+    ClienteDTO buscarPorId(Integer id) throws Exception;
+    ClienteDTO guardar(ClienteDTO clienteDTO) throws Exception;
     ClienteDTO actualizar(ClienteDTO clienteDTO);
 
 }
