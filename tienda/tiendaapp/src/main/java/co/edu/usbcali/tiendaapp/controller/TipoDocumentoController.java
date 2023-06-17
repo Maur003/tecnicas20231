@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/tipoDocumento")
 public class TipoDocumentoController {
 
     private final TipoDocumentoRepository tipoDocumentoRepository;
@@ -24,12 +25,12 @@ public class TipoDocumentoController {
         this.tipoDocumentoService = tipoDocumentoService;
     }
 
-    @GetMapping("/tipoDocumento")
+    @GetMapping("/buscarTodos")
     List<TipoDocumentoDTO> buscarTodos() {
         return TipoDocumentoMapper.domainToDtoList(tipoDocumentoRepository.findAll());
     }
 
-    @GetMapping("/tipoDocumento/{id}")
+    @GetMapping("/buscarPorId/{id}")
     ResponseEntity<TipoDocumentoDTO> buscarPorId(@PathVariable Integer id) throws Exception {
         return new ResponseEntity<TipoDocumentoDTO>(tipoDocumentoService.buscarPorId(id),
                 HttpStatus.OK);

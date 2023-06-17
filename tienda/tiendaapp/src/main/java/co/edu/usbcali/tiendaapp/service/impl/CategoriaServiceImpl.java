@@ -38,7 +38,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Categoria buscarTipoDocumentoPorId(Integer id) throws Exception {
+    public Categoria buscarCategoriaPorId(Integer id) throws Exception {
         ValidationsUtil.integerIsNullOrLessZero(id, CategoriaServiceMessages.ID_VALIDO_MSG);
         return categoriaRepository.findById(id).orElseThrow(
                 () -> new CategoriaException
@@ -51,6 +51,12 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public CategoriaDTO guardar(CategoriaDTO categoriaDTO) throws Exception {
         validarCategoria(categoriaDTO, true);
+
+        //Valiar si existe la categoria con ese nombre
+        boolean existePorNombre = categoriaRepository.existsByNombreIgnoreCase(categoriaDTO.getNombre());
+        if(existePorNombre) throw new Exception(
+                String.format(CategoriaServiceMessages.EXISTE_POR_NOMBRE, categoriaDTO.getNombre()));
+
         Categoria categoria = CategoriaMapper.dtoToDomain(categoriaDTO);
         return CategoriaMapper.domainToDto(categoriaRepository.save(categoria));
     }
@@ -58,8 +64,25 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public CategoriaDTO actualizar(CategoriaDTO categoriaDTO) throws Exception {
         validarCategoria(categoriaDTO, false);
-        Categoria categoria = CategoriaMapper.dtoToDomain(categoriaDTO);
+
+        //Valiar si existe la categoria con ese nombre y otro Id
+        boolean existePorNombreYOtroId = categoriaRepository
+                .existsByNombreIgnoreCaseAndIdNot(categoriaDTO.getNombre(), categoriaDTO.getId());
+        if(existePorNombreYOtroId) throw new Exception(
+                String.format(CategoriaServiceMessages.EXISTE_POR_NOMBRE, categoriaDTO.getNombre()));
+
+        Categoria categoria = buscarCategoriaPorId(categoriaDTO.getId());
+
+        //Modificar atributos
+        categoria.setNombre(categoriaDTO.getNombre());
+        categoria.setDescripcion(categoriaDTO.getDescripcion());
+
         return CategoriaMapper.domainToDto(categoriaRepository.save(categoria));
+    }
+
+    @Override
+    public void eliminar(Integer id) throws Exception {
+        //Esto lo deben implementar para el miércoles 21 de junio del 2023, hasta las 5 pm
     }
 
     private void validarCategoria(CategoriaDTO categoriaDTO, boolean esGuardado) throws Exception {
