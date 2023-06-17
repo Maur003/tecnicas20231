@@ -2,6 +2,8 @@ package co.edu.usbcali.tiendaapp.mapper;
 
 import co.edu.usbcali.tiendaapp.domain.Producto;
 import co.edu.usbcali.tiendaapp.dto.ProductoDTO;
+import co.edu.usbcali.tiendaapp.request.CrearProductoRequest;
+import co.edu.usbcali.tiendaapp.response.CrearProductoResponse;
 
 import java.util.List;
 
@@ -37,6 +39,29 @@ public class ProductoMapper {
 
     public static List<Producto> dtoToDomainList(List<ProductoDTO> productosDtos) {
         return productosDtos.stream().map(ProductoMapper::dtoToDomain).toList();
+    }
+
+    public static Producto crearRequestToDomain(CrearProductoRequest crearProductoRequest) {
+        return Producto.builder()
+                .referencia(crearProductoRequest.getReferencia())
+                .nombre(crearProductoRequest.getNombre())
+                .descripcion(crearProductoRequest.getDescripcion())
+                .precioUnitario(crearProductoRequest.getPrecioUnitario())
+                .unidadesDisponibles(crearProductoRequest.getUnidadesDisponibles())
+                .build();
+    }
+
+    public static CrearProductoResponse crearDomainToResponse(Producto producto) {
+        return CrearProductoResponse.builder()
+                .id(producto.getId())
+                .referencia(producto.getReferencia())
+                .nombre(producto.getNombre())
+                .descripcion(producto.getDescripcion())
+                .precioUnitario(producto.getPrecioUnitario())
+                .unidadesDisponibles(producto.getUnidadesDisponibles())
+                .nombreCategoria((producto.getCategoria() == null) ?
+                        null : producto.getCategoria().getNombre())
+                .build();
     }
 
 }
