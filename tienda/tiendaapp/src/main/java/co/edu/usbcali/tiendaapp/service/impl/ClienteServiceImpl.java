@@ -58,7 +58,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDTO guardar(ClienteDTO clienteDTO) throws Exception {
-        validarCliente(clienteDTO);
+        validarCliente(clienteDTO, true);
         Cliente cliente = ClienteMapper.dtoToDomain(clienteDTO);
         TipoDocumento tipoDocumento = tipoDocumentoService.buscarTipoDocumentoPorId(
                 clienteDTO.getTipoDocumentoId());
@@ -74,11 +74,20 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteDTO actualizar(ClienteDTO clienteDTO) {
-        return null;
+    public ClienteDTO actualizar(ClienteDTO clienteDTO) throws Exception {
+        validarCliente(clienteDTO, false);
+        Cliente cliente = ClienteMapper.dtoToDomain(clienteDTO);
+        TipoDocumento tipoDocumento = tipoDocumentoService.buscarTipoDocumentoPorId(
+                clienteDTO.getTipoDocumentoId());
+        cliente.setTipoDocumento(tipoDocumento);
+
+        return ClienteMapper.domainToDto(clienteRepository.save(cliente));
     }
 
-    private void validarCliente(ClienteDTO clienteDTO) throws Exception{
+    private void validarCliente(ClienteDTO clienteDTO, boolean esGuardado) throws Exception{
+        if(!esGuardado) {
+            ValidationsUtil.isNull(clienteDTO.getId(), ClienteServiceMessages.ID_REQUERIDO);
+        }
         ValidationsUtil.isNull(clienteDTO, ClienteServiceMessages.CLIENTE_NULO);
         ValidationsUtil.stringIsNullOrBlank(clienteDTO.getNombres(), ClienteServiceMessages.NOMBRES_REQUERIDOS);
         ValidationsUtil.stringIsNullOrBlank(clienteDTO.getApellidos(), ClienteServiceMessages.APELLIDOS_REQUERIDOS);

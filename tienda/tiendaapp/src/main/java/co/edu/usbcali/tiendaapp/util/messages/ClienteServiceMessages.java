@@ -10,5 +10,5 @@ public class ClienteServiceMessages {
     public static final String ESTADO_REQUERIDO = "El estado es requerido";
     public static final String ESTADO_LENGHT = "El estado solo puede tener 1 caracter";
     public static final String TIPO_DOCUMENTO_ID_REQUERIDO = "El tipo de documento es requerido y debe ser un número positivo";
-
+    public static final String ID_REQUERIDO = "Para actualizar un cliente se requiere el Id";
 }

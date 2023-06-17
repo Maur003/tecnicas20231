@@ -17,14 +17,14 @@ import java.util.List;
 public class Categoria {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(length = 10, nullable = false)
     private String nombre;
 
     @Column
-    private String descricpion;
+    private String descripcion;
 
 //    @OneToMany(mappedBy = "categoria")
   //  List<Producto> productos;

@@ -11,4 +11,8 @@ public interface CategoriaService {
     CategoriaDTO buscarPorId(Integer id) throws Exception;
 
     Categoria buscarTipoDocumentoPorId(Integer id) throws Exception;
+
+    CategoriaDTO guardar(CategoriaDTO categoriaDTO) throws Exception;
+
+    CategoriaDTO actualizar(CategoriaDTO categoriaDTO) throws Exception;
 }

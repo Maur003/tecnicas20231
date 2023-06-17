@@ -11,7 +11,7 @@ public class CategoriaMapper {
         return CategoriaDTO.builder()
                 .id(categoria.getId())
                 .nombre(categoria.getNombre())
-                .descripcion(categoria.getDescricpion())
+                .descripcion(categoria.getDescripcion())
                 .build();
     }
 
@@ -19,7 +19,7 @@ public class CategoriaMapper {
         return Categoria.builder()
                 .id(categoriaDTO.getId())
                 .nombre(categoriaDTO.getNombre())
-                .descricpion(categoriaDTO.getDescripcion())
+                .descripcion(categoriaDTO.getDescripcion())
                 .build();
     }
 

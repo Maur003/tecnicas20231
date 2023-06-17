@@ -8,6 +8,6 @@ public interface ClienteService {
     List<ClienteDTO> obtenerTodos();
     ClienteDTO buscarPorId(Integer id) throws Exception;
     ClienteDTO guardar(ClienteDTO clienteDTO) throws Exception;
-    ClienteDTO actualizar(ClienteDTO clienteDTO);
+    ClienteDTO actualizar(ClienteDTO clienteDTO) throws Exception;
 
 }
