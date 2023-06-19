@@ -6,6 +6,8 @@ import co.edu.usbcali.tiendaapp.dto.ClienteDTO;
 import co.edu.usbcali.tiendaapp.exceptions.ClienteException;
 import co.edu.usbcali.tiendaapp.mapper.ClienteMapper;
 import co.edu.usbcali.tiendaapp.repository.ClienteRepository;
+import co.edu.usbcali.tiendaapp.request.CrearClienteRequest;
+import co.edu.usbcali.tiendaapp.response.CrearClienteResponse;
 import co.edu.usbcali.tiendaapp.service.ClienteService;
 import co.edu.usbcali.tiendaapp.service.TipoDocumentoService;
 import co.edu.usbcali.tiendaapp.util.ValidationsUtil;
@@ -82,6 +84,25 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setTipoDocumento(tipoDocumento);
 
         return ClienteMapper.domainToDto(clienteRepository.save(cliente));
+    }
+
+    @Override
+    public CrearClienteResponse crearCliente(CrearClienteRequest crearClienteRequest) throws Exception {
+        Cliente cliente = ClienteMapper.crearRequestToDomain(crearClienteRequest);
+        TipoDocumento tipoDocumento = tipoDocumentoService.buscarTipoDocumentoPorId(
+                crearClienteRequest.getTipoDocumentoId());
+
+        boolean existePorTipoYDocumento = clienteRepository.existsByTipoDocumentoIdAndDocumento(
+                crearClienteRequest.getTipoDocumentoId(), crearClienteRequest.getDocumento());
+
+        if(existePorTipoYDocumento) throw new Exception(
+                String.format(ClienteServiceMessages.EXISTE_POR_TIPO_DOCUMENTO_Y_DOCUMENTO,
+                        tipoDocumento.getDescripcion(), crearClienteRequest.getDocumento())
+        );
+
+        cliente.setTipoDocumento(tipoDocumento);
+
+        return ClienteMapper.crearDomainToResponse(cliente);
     }
 
     private void validarCliente(ClienteDTO clienteDTO, boolean esGuardado) throws Exception{

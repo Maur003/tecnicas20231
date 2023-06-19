@@ -9,6 +9,7 @@ public class ProductoServiceMessages {
     public static final String PRECIO_UNITARIO_NUMERO = "Debe ingresar un valor numérico mayor a 0";
     public static final String UNIDADES_DISPONIBLES_REQUERIDO = "Debe ingresar las unidades disponibles del producto";
     public static final String UNIDADES_DISPONIBLES_NUMERO = "Debe ingresar un valor numérico";
+    public static final String EXISTE_REFERENCIA_EN_CATEGORIA = "Ya existe la referencia %s en la categoria %s";
 
 
 
