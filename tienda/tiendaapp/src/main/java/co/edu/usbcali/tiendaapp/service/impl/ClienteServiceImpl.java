@@ -88,21 +88,28 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public CrearClienteResponse crearCliente(CrearClienteRequest crearClienteRequest) throws Exception {
+        // Mapear cliente hacia el Domain
         Cliente cliente = ClienteMapper.crearRequestToDomain(crearClienteRequest);
+
+        // Buscar el tipo de documento (Domain)
         TipoDocumento tipoDocumento = tipoDocumentoService.buscarTipoDocumentoPorId(
                 crearClienteRequest.getTipoDocumentoId());
 
+        // Validar si ya existe un cliente con la llave Documento-TipoDocumento
         boolean existePorTipoYDocumento = clienteRepository.existsByTipoDocumentoIdAndDocumento(
                 crearClienteRequest.getTipoDocumentoId(), crearClienteRequest.getDocumento());
 
+        // Si el cliente ya existe por la llave Documento-TipoDocumento entonces lanza excepción
         if(existePorTipoYDocumento) throw new Exception(
                 String.format(ClienteServiceMessages.EXISTE_POR_TIPO_DOCUMENTO_Y_DOCUMENTO,
                         tipoDocumento.getDescripcion(), crearClienteRequest.getDocumento())
         );
 
+        // Hidratar el Tipo de Documento del cliente, dado que no fue mapeada
         cliente.setTipoDocumento(tipoDocumento);
 
-        return ClienteMapper.crearDomainToResponse(cliente);
+        // Guarda el nuevo cliente, retorna el Response a la capa Superior utilizando el Mapper.
+        return ClienteMapper.crearDomainToResponse(clienteRepository.save(cliente));
     }
 
     private void validarCliente(ClienteDTO clienteDTO, boolean esGuardado) throws Exception{

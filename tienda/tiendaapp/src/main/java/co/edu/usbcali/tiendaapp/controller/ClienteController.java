@@ -1,10 +1,13 @@
 package co.edu.usbcali.tiendaapp.controller;
 
-import co.edu.usbcali.tiendaapp.dto.CategoriaDTO;
+import co.edu.usbcali.tiendaapp.request.CrearClienteRequest;
+import co.edu.usbcali.tiendaapp.response.CrearClienteResponse;
 import co.edu.usbcali.tiendaapp.service.ClienteService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/cliente")
@@ -16,5 +19,8 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-
+    @PostMapping("/nuevo")
+    CrearClienteResponse nuevoCliente(@RequestBody @Valid CrearClienteRequest crearClienteRequest) throws Exception {
+        return clienteService.crearCliente(crearClienteRequest);
+    }
 }
