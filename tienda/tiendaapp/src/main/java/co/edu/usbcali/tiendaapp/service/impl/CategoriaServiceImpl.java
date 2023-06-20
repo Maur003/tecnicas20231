@@ -85,6 +85,12 @@ public class CategoriaServiceImpl implements CategoriaService {
         //Esto lo deben implementar para el miércoles 21 de junio del 2023, hasta las 5 pm
     }
 
+    @Override
+    public List<CategoriaDTO> buscarPorNombreLike(String nombre) throws Exception {
+        ValidationsUtil.stringIsNullOrBlank(nombre, CategoriaServiceMessages.NOMBRE_REQUERIDO);
+        return CategoriaMapper.domainToDtoList(categoriaRepository.findByNombreLikeIgnoreCase("%"+nombre+"%"));
+    }
+
     private void validarCategoria(CategoriaDTO categoriaDTO, boolean esGuardado) throws Exception {
         if(!esGuardado) {
             ValidationsUtil.isNull(categoriaDTO.getId(), CategoriaServiceMessages.ID_REQUERIDO);

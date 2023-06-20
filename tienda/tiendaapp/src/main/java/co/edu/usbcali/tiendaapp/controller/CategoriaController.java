@@ -1,8 +1,6 @@
 package co.edu.usbcali.tiendaapp.controller;
 
 import co.edu.usbcali.tiendaapp.dto.CategoriaDTO;
-import co.edu.usbcali.tiendaapp.dto.TipoDocumentoDTO;
-import co.edu.usbcali.tiendaapp.mapper.TipoDocumentoMapper;
 import co.edu.usbcali.tiendaapp.service.CategoriaService;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,4 +30,10 @@ public class CategoriaController {
     CategoriaDTO actualizarCategoria(@RequestBody CategoriaDTO categoriaDTO) throws Exception {
         return categoriaService.actualizar(categoriaDTO);
     }
+
+    @GetMapping("/buscarPorNombre/")
+    List<CategoriaDTO> buscarPorNombre(@RequestParam("nombre") String nombre) throws Exception {
+        return categoriaService.buscarPorNombreLike(nombre);
+    }
+
 }
