@@ -14,5 +14,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
     boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Integer id);
 
     List<Categoria> findByNombreLikeIgnoreCase(String nombre);
+    
+    List<Categoria> findAllByOrderByNombreAsc();
 
 }

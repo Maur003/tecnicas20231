@@ -23,7 +23,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public List<CategoriaDTO> obtenerTodos() {
-        return CategoriaMapper.domainToDtoList(categoriaRepository.findAll());
+        return CategoriaMapper.domainToDtoList(categoriaRepository.findAllByOrderByNombreAsc());
     }
 
     @Override

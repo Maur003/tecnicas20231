@@ -6,6 +6,8 @@ import co.edu.usbcali.tiendaapp.dto.ClienteDTO;
 import co.edu.usbcali.tiendaapp.exceptions.ClienteException;
 import co.edu.usbcali.tiendaapp.mapper.ClienteMapper;
 import co.edu.usbcali.tiendaapp.repository.ClienteRepository;
+import co.edu.usbcali.tiendaapp.request.CrearClienteRequest;
+import co.edu.usbcali.tiendaapp.response.CrearClienteResponse;
 import co.edu.usbcali.tiendaapp.service.ClienteService;
 import co.edu.usbcali.tiendaapp.service.TipoDocumentoService;
 import co.edu.usbcali.tiendaapp.util.ValidationsUtil;
@@ -82,6 +84,32 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setTipoDocumento(tipoDocumento);
 
         return ClienteMapper.domainToDto(clienteRepository.save(cliente));
+    }
+
+    @Override
+    public CrearClienteResponse crearCliente(CrearClienteRequest crearClienteRequest) throws Exception {
+        // Mapear cliente hacia el Domain
+        Cliente cliente = ClienteMapper.crearRequestToDomain(crearClienteRequest);
+
+        // Buscar el tipo de documento (Domain)
+        TipoDocumento tipoDocumento = tipoDocumentoService.buscarTipoDocumentoPorId(
+                crearClienteRequest.getTipoDocumentoId());
+
+        // Validar si ya existe un cliente con la llave Documento-TipoDocumento
+        boolean existePorTipoYDocumento = clienteRepository.existsByTipoDocumentoIdAndDocumento(
+                crearClienteRequest.getTipoDocumentoId(), crearClienteRequest.getDocumento());
+
+        // Si el cliente ya existe por la llave Documento-TipoDocumento entonces lanza excepción
+        if(existePorTipoYDocumento) throw new Exception(
+                String.format(ClienteServiceMessages.EXISTE_POR_TIPO_DOCUMENTO_Y_DOCUMENTO,
+                        tipoDocumento.getDescripcion(), crearClienteRequest.getDocumento())
+        );
+
+        // Hidratar el Tipo de Documento del cliente, dado que no fue mapeada
+        cliente.setTipoDocumento(tipoDocumento);
+
+        // Guarda el nuevo cliente, retorna el Response a la capa Superior utilizando el Mapper.
+        return ClienteMapper.crearDomainToResponse(clienteRepository.save(cliente));
     }
 
     private void validarCliente(ClienteDTO clienteDTO, boolean esGuardado) throws Exception{
